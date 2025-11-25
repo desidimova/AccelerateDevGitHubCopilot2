@@ -28,6 +28,11 @@ public class JsonData
         _loansPath = section["Loans"] ?? Path.Combine("Json", "Loans.json");
     }
 
+    public JsonData()
+    {
+    }
+
+
     public async Task EnsureDataLoaded()
     {
         if (Patrons == null)
@@ -209,4 +214,8 @@ public class JsonData
         }
     }
 
+    public Book? SearchBookByTitle(string title)
+    {
+        return Books?.FirstOrDefault(b => b.Title.Equals(title, StringComparison.OrdinalIgnoreCase));
+    }
 }
