@@ -3,6 +3,7 @@ using Library.ApplicationCore.Entities;
 using Library.ApplicationCore.Enums;
 using Library.Console;
 using Library.Infrastructure.Data;
+using Microsoft.Extensions.Configuration;
 
 public class ConsoleApp
 {
@@ -16,18 +17,18 @@ public class ConsoleApp
     IPatronRepository _patronRepository;
     ILoanRepository _loanRepository;
     ILoanService _loanService;
+
     IPatronService _patronService;
 
     JsonData _jsonData;
-    public ConsoleApp(ILoanService loanService, IPatronService patronService, IPatronRepository patronRepository, ILoanRepository loanRepository)
+    public ConsoleApp(ILoanService loanService, IPatronService patronService, IPatronRepository patronRepository, ILoanRepository loanRepository, IConfiguration configuration)
     {
         _patronRepository = patronRepository;
         _loanRepository = loanRepository;
         _loanService = loanService;
         _patronService = patronService;
-        _jsonData = new JsonData();
+        _jsonData = new JsonData(configuration);
     }
-
     public async Task Run()
     {
         while (true)
@@ -50,7 +51,7 @@ public class ConsoleApp
         }
     }
 
-    async Task<ConsoleState> PatronSearch()
+async Task<ConsoleState> PatronSearch()
     {
         string searchInput = ReadPatronName();
 
@@ -282,18 +283,6 @@ public class ConsoleApp
         }
 
         throw new InvalidOperationException("An input option is not handled.");
-    }
-
-    async Task<ConsoleState> SearchBooks()
-    {
-        string? bookTitle = null;
-        while (String.IsNullOrWhiteSpace(bookTitle))
-        {
-            Console.Write("Enter a book title to search for: ");
-            bookTitle = Console.ReadLine();
-        }
-
-        return ConsoleState.PatronDetails;
     }
     
     async Task<ConsoleState> SearchBooks()

@@ -28,6 +28,11 @@ public class JsonData
         _loansPath = section["Loans"] ?? Path.Combine("Json", "Loans.json");
     }
 
+    public JsonData()
+    {
+    }
+
+
     public async Task EnsureDataLoaded()
     {
         if (Patrons == null)
